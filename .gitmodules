@@ -1,0 +1,3 @@
+[submodule "third-party/riscv-tests"]
+	path = third-party/riscv-tests
+	url = git@github.com:cartesi/riscv-tests.git
