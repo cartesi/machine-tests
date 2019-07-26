@@ -60,9 +60,11 @@ $(SRCDIR):
 $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
 
-install:
+copy-riscv-tests: $(BUILDDIR)
+	cp -a $(DEPDIR)/riscv-tests/isa/*.bin $(DEPDIR)/riscv-tests/isa/*.dump $(BUILDDIR)
+
+install: copy-riscv-tests
 	mkdir -p $(INSTALLDIR)
-	cp -a $(DEPDIR)/riscv-tests/isa/*.bin $(DEPDIR)/riscv-tests/isa/*.dump $(INSTALLDIR)
 	cp -a $(BUILDDIR)/*.bin $(BUILDDIR)/*.dump $(INSTALLDIR)
 
 toolchain-env:
