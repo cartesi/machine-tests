@@ -1,0 +1,43 @@
+name: Build
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+    container: cartesi/image-toolchain
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: recursive
+          token: ${{ secrets.CI_TOKEN }}
+
+      - name: Download emulador headers
+        uses: Legion2/download-release-action@v2.1.0
+        with:
+          repository: cartesi-corp/machine-emulator
+          tag: 'v0.1.1-pre'
+          file: machine-emulator-Linux-v0.1.1-pre.tar.gz
+          token: ${{ secrets.CI_TOKEN }}
+
+      - name: Install emulator header
+        run: mkdir -p /opt/cartesi && tar -zxvf machine-emulator-Linux-v0.1.1-pre.tar.gz -C /opt/cartesi
+
+      - name: Build dependencies
+        run: make dep -j$(nproc)
+
+      - name: Build
+        run: make EMULATOR_INC=/opt/cartesi/include/machine-emulator -j$(nproc)
+
+      - name: Install
+        run: make install
+
+      - name: TAR
+        run: tar -czf machine-tests-`git describe --tags --exact-match`.tar.gz -C /opt/cartesi/tests .
+        if: startsWith(github.ref, 'refs/tags/v')
+
+      - uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          prerelease: true
+          files: machine-tests-*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_TOKEN }}
