@@ -30,8 +30,8 @@ DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 TOOLCHAIN_TAG ?= devel
 
 ifeq ($(EMULATOR_INC),)
-EMULATOR_DEP = $(DEPDIR)/machine-emulator
-EMULATOR_INC = $(abspath $(EMULATOR_DEP)/src)
+EMULATOR_DEP = $(DEPDIR)/machine-emulator-defines
+EMULATOR_INC = $(abspath $(EMULATOR_DEP))
 endif
 
 RISCV_PREFIX = riscv64-unknown-linux-gnu-
@@ -53,8 +53,8 @@ distclean: clean
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
-$(DEPDIR)/machine-emulator:
-	if [ ! -d $@ ]; then git clone --branch master --depth 1 git@github.com:cartesi/machine-emulator.git $@; fi
+$(DEPDIR)/machine-emulator-defines:
+	if [ ! -d $@ ]; then git clone --branch master --depth 1 git@github.com:cartesi-corp/machine-emulator-defines.git $@; fi
 
 $(DEPDIR)/riscv-tests:
 	cd $@ && ./configure
@@ -88,6 +88,6 @@ toolchain-env:
 		-e GID=$$(id -g) \
 		-v `pwd`:/opt/cartesi/machine-tests \
 		-w /opt/cartesi/machine-tests \
-		cartesi/image-toolchain:$(TOOLCHAIN_TAG)
+		cartesi/toolchain:$(TOOLCHAIN_TAG)
 
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)

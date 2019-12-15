@@ -13,19 +13,19 @@ jobs:
       - name: Download emulador headers
         uses: Legion2/download-release-action@v2.1.0
         with:
-          repository: cartesi-corp/machine-emulator
-          tag: 'v0.1.1-pre'
-          file: machine-emulator-Linux-v0.1.1-pre.tar.gz
+          repository: cartesi-corp/machine-emulator-defines
+          tag: 'v0.1.0-rc1'
+          file: machine-emulator-defines-v0.1.0-rc1.tar.gz
           token: ${{ secrets.CI_TOKEN }}
 
       - name: Install emulator header
-        run: mkdir -p /opt/cartesi && tar -zxvf machine-emulator-Linux-v0.1.1-pre.tar.gz -C /opt/cartesi
+        run: mkdir -p /opt/cartesi/include/machine-emulator-defines && tar -zxvf machine-emulator-defines-v0.1.0-rc1.tar.gz -C /opt/cartesi/include/machine-emulator-defines
 
       - name: Build dependencies
         run: make dep -j$(nproc)
 
       - name: Build
-        run: make EMULATOR_INC=/opt/cartesi/include/machine-emulator -j$(nproc)
+        run: make EMULATOR_INC=/opt/cartesi/include/machine-emulator-defines -j$(nproc)
 
       - name: Install
         run: make install
