@@ -3,29 +3,18 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-18.04
-    container: cartesi/image-toolchain
+    container: cartesi/toolchain:0.1.0
     steps:
       - uses: actions/checkout@v1
         with:
           submodules: recursive
           token: ${{ secrets.CI_TOKEN }}
 
-      - name: Download emulador headers
-        uses: Legion2/download-release-action@v2.1.0
-        with:
-          repository: cartesi-corp/machine-emulator-defines
-          tag: 'v0.1.0-rc1'
-          file: machine-emulator-defines-v0.1.0-rc1.tar.gz
-          token: ${{ secrets.CI_TOKEN }}
-
-      - name: Install emulator header
-        run: mkdir -p /opt/cartesi/include/machine-emulator-defines && tar -zxvf machine-emulator-defines-v0.1.0-rc1.tar.gz -C /opt/cartesi/include/machine-emulator-defines
-
       - name: Build dependencies
         run: make dep -j$(nproc)
 
       - name: Build
-        run: make EMULATOR_INC=/opt/cartesi/include/machine-emulator-defines -j$(nproc)
+        run: make -j$(nproc)
 
       - name: Install
         run: make install
