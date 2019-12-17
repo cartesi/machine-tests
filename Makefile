@@ -27,7 +27,7 @@ SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,riscv-tests)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
-TOOLCHAIN_TAG ?= devel
+TOOLCHAIN_TAG ?= 0.1.0
 
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
