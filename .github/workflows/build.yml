@@ -3,7 +3,7 @@ on: [push]
 jobs:
   build:
     runs-on: ubuntu-18.04
-    container: cartesi/toolchain:0.1.0
+    container: cartesi/toolchain:0.2.0
     steps:
       - uses: actions/checkout@v1
         with:
