@@ -2,10 +2,10 @@ name: Build
 on: [push]
 jobs:
   build:
-    runs-on: ubuntu-18.04
-    container: cartesi/toolchain:0.3.0
+    runs-on: ubuntu-20.04
+    container: cartesi/toolchain:0.4.0
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
         with:
           submodules: recursive
           token: ${{ secrets.CI_TOKEN }}
