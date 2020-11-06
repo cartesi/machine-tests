@@ -27,14 +27,14 @@ SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,riscv-tests)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
-TOOLCHAIN_TAG ?= 0.4.0
+TOOLCHAIN_TAG ?= 0.5.0
 
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
 EMULATOR_INC = $(abspath $(dir $(EMULATOR_DEP)))
 endif
 
-RISCV_PREFIX = riscv64-unknown-linux-gnu-
+RISCV_PREFIX = riscv64-cartesi-linux-gnu-
 RVCC  = $(RISCV_PREFIX)gcc
 RVCXX = $(RISCV_PREFIX)g++
 RVCOPY = $(RISCV_PREFIX)objcopy

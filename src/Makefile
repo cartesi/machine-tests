@@ -18,7 +18,7 @@ ifneq ($(EMULATOR_INC),)
 EMULATOR_FLAGS= -I$(EMULATOR_INC)
 endif
 
-RISCV_PREFIX = riscv64-unknown-linux-gnu-
+RISCV_PREFIX = riscv64-cartesi-linux-gnu-
 CC  = $(RISCV_PREFIX)gcc
 CXX = $(RISCV_PREFIX)g++
 OBJCOPY = $(RISCV_PREFIX)objcopy
