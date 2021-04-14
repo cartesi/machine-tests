@@ -20,7 +20,7 @@
 	j exit;
 
 #define CARTESI_MVENDORID 0x6361727465736920
-#define CARTESI_MARCHID   0x4
+#define CARTESI_MARCHID   0x5
 #define CARTESI_MIMPID    0x1
 
 // Section with code
