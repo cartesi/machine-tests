@@ -29,12 +29,12 @@ _start:
     jal ra, check_pma_with_a2;
 
     li a2, 0x0123456789abcdef;
-    li a0, PMA_START_DID_CONST(PMA_ROLLUP_TX_BUFFER_DID_DEF);
+    li a0, PMA_START_DID_CONST(PMA_ROLLUP_INPUT_METADATA_DID_DEF);
     jal ra, find_pma_by_did;
-    jal ra, fill_pma_with_a2;
+    jal ra, check_pma_with_a2;
 
     li a2, 0x0123456789abcdef;
-    li a0, PMA_START_DID_CONST(PMA_ROLLUP_INPUT_METADATA_DID_DEF);
+    li a0, PMA_START_DID_CONST(PMA_ROLLUP_TX_BUFFER_DID_DEF);
     jal ra, find_pma_by_did;
     jal ra, fill_pma_with_a2;
 
