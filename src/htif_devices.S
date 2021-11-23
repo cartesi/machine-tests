@@ -1,4 +1,4 @@
-/* Copyright 2020 Cartesi Pte. Ltd.
+/* Copyright 2020-2021 Cartesi Pte. Ltd.
  *
  * Licensed under the Apache License, Version 2.0 (the "License"); you may not
  * use this file except in compliance with the License. You may obtain a copy of
@@ -12,6 +12,9 @@
  *
  */
 #include "htif_util.h"
+
+// This program Exercises HTIF console and different permutations of yield:
+// manual x automatic, the different 'reasons', and incrementing data values.
 
 // Uses HTIF to exit the emulator with exit code in an immediate.
 // HTIF halt device exits with dev = cmd = 0 and a payload with lsb set.
