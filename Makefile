@@ -90,4 +90,14 @@ toolchain-env:
 		-w /opt/cartesi/machine-tests \
 		cartesi/toolchain:$(TOOLCHAIN_TAG)
 
+toolchain-exec:
+	@docker run --hostname toolchain-env --rm \
+		-e USER=$$(id -u -n) \
+		-e GROUP=$$(id -g -n) \
+		-e UID=$$(id -u) \
+		-e GID=$$(id -g) \
+		-v `pwd`:/opt/cartesi/machine-emulator-rom \
+		-w /opt/cartesi/machine-emulator-rom \
+		$(TOOLCHAIN_DOCKER_REPOSITORY):$(TOOLCHAIN_TAG) $(CONTAINER_COMMAND)
+
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)
