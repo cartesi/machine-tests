@@ -27,6 +27,7 @@ SRCCLEAN := $(addsuffix .clean,$(SRCDIR))
 DEPDIRS := $(addprefix $(DEPDIR)/,riscv-tests)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
+TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
 TOOLCHAIN_TAG ?= 0.7.0
 
 ifeq ($(EMULATOR_INC),)
@@ -88,10 +89,10 @@ toolchain-env:
 		-e GID=$$(id -g) \
 		-v `pwd`:/opt/cartesi/machine-tests \
 		-w /opt/cartesi/machine-tests \
-		cartesi/toolchain:$(TOOLCHAIN_TAG)
+		$(TOOLCHAIN_DOCKER_REPOSITORY):$(TOOLCHAIN_TAG)
 
 toolchain-exec:
-	@docker run --hostname toolchain-env --rm \
+	docker run --hostname toolchain-env --rm \
 		-e USER=$$(id -u -n) \
 		-e GROUP=$$(id -g -n) \
 		-e UID=$$(id -u) \
