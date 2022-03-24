@@ -10,6 +10,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Added rollup exception test
 
+### Changed
+- Updated toolchain version to v0.8.0
+
 ## [0.13.0] - 2021-12-17
 ### Changed
 - Updated toolchain version to v0.7.0

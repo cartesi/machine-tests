@@ -28,7 +28,7 @@ DEPDIRS := $(addprefix $(DEPDIR)/,riscv-tests)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
-TOOLCHAIN_TAG ?= 0.7.0
+TOOLCHAIN_TAG ?= 0.8.0
 
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
