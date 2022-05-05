@@ -24,13 +24,13 @@
     j exit;
 
 // Check HTIF fromhost address for yield command ack
-#define check_htif_yield_ack(dev, cmd, data) \
+#define check_htif_ack(dev, cmd, data) \
     li t0, PMA_HTIF_START_DEF; \
     ld t3, O_IYIELD (t0); \
     srli t3, t3, cmd; \
     andi t3, t3, 1; \
     addi t3, t3, -1; \
-    not t3, t3; // t3 is all 0 if cmd is disabled, all 1 if enabled \
+    not t3, t3; /* t3 is all 0 if cmd is disabled, all 1 if enabled */ \
     li t0, dev; \
     slli t1, t0, HTIF_DEV_SHIFT_DEF; \
     li t0, cmd; \
@@ -42,24 +42,7 @@
     li t2, HTIF_DATA_MASK_DEF; \
     and t0, t0, t2; \
     or t1, t1, t0; \
-    and t1, t1, t3; // if cmd is disabled, expect 0 ack \
-    li t0, PMA_HTIF_START_DEF; \
-    ld t2, O_FROMHOST (t0); \
-    bne t1, t2, ack_failed;
-
-// Check HTIF fromhost address for command ack
-#define check_htif_ack(dev, cmd, data) \
-    li t0, dev; \
-    slli t1, t0, HTIF_DEV_SHIFT_DEF; \
-    li t0, cmd; \
-    slli t0, t0, HTIF_CMD_SHIFT_DEF; \
-    li t2, HTIF_CMD_MASK_DEF; \
-    and t0, t0, t2; \
-    or t1, t1, t0; \
-    li t0, data; \
-    li t2, HTIF_DATA_MASK_DEF; \
-    and t0, t0, t2; \
-    or t1, t1, t0; \
+    and t1, t1, t3; /* if cmd is disabled, expect 0 ack */ \
     li t0, PMA_HTIF_START_DEF; \
     ld t2, O_FROMHOST (t0); \
     bne t1, t2, ack_failed;
@@ -76,51 +59,51 @@ _start:
 
     // Test yield, manual
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 10)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 11)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 12)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_RX_ACCEPTED_DEF, 13)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_RX_ACCEPTED_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_RX_REJECTED_DEF, 14)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_RX_REJECTED_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_TX_VOUCHER_DEF, 15)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_VOUCHER_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_TX_NOTICE_DEF, 16)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_NOTICE_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_TX_REPORT_DEF, 17)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_REPORT_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_TX_EXCEPTION_DEF, 18)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_EXCEPTION_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
 
     // Test yield, auto
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 20)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 21)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 22)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
 
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_RX_ACCEPTED_DEF, 23)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_RX_ACCEPTED_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_RX_REJECTED_DEF, 24)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_RX_REJECTED_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
 
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_TX_VOUCHER_DEF, 25)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_VOUCHER_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
 
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_TX_NOTICE_DEF, 26)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_NOTICE_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
 
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_TX_REPORT_DEF, 27)
-    check_htif_yield_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_REASON_TX_REPORT_DEF, 0);
+    check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
 
 
     // Test console getchar
