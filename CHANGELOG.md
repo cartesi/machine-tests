@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Correct a bug on the HTIF test
+- Split yield and console into separate files
+
 ## [0.15.0] - 2022-04-20
 ### Changed
 - Updated toolchain version to v0.9.0

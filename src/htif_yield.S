@@ -13,7 +13,7 @@
  */
 #include "htif_util.h"
 
-// This program Exercises HTIF console and different permutations of yield:
+// This program Exercises different permutations of HTIF yield:
 // manual x automatic, the different 'reasons', and incrementing data values.
 
 // Uses HTIF to exit the emulator with exit code in an immediate.
@@ -104,25 +104,6 @@ _start:
 
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_TX_REPORT_DEF, 27)
     check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
-
-
-    // Test console getchar
-    htif_console_getchar();
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_GETCHAR_DEF, 0);
-    htif_console_getchar();
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_GETCHAR_DEF, 0);
-    htif_console_getchar();
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_GETCHAR_DEF, 0);
-
-    // Test console putchar
-    htif_console_putchar('C');
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_PUTCHAR_DEF, 0);
-    htif_console_putchar('T');
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_PUTCHAR_DEF, 0);
-    htif_console_putchar('S');
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_PUTCHAR_DEF, 0);
-    htif_console_putchar('I');
-    check_htif_ack(HTIF_DEVICE_CONSOLE_DEF, HTIF_CONSOLE_PUTCHAR_DEF, 0);
 
     // halt with payload 42
     exit_imm(42);
