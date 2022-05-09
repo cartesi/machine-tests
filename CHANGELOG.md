@@ -6,6 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Bump marchid to 0xa
 - Correct a bug on the HTIF test
 - Split yield and console into separate files
 
