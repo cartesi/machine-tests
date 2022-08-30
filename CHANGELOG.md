@@ -6,9 +6,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.19.0] - 2022-06-31
+## [0.19.0] - 2022-06-30
 ### Changed
 - Updated toolchain version to v0.11.0
+- Bump marchid to 0xc
 
 ## [0.18.0] - 2022-06-24
 ### Changed
@@ -55,7 +56,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.18.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.19.0...HEAD
+[0.19.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.19.0
 [0.18.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.18.0
 [0.17.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.17.0
 [0.16.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.16.0
