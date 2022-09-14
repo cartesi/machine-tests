@@ -5,8 +5,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.20.0] - 2022-09-14
 ### Added
-- Add many tests to test more the RISC-V specification.
+- Add CSR semantics test
+- Add CSR counters test
+- Add LR/SC test
+- Add mcycle write test
 
 ### Changed
 - Updated RISC-V tests.
@@ -61,7 +66,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.19.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.20.0...HEAD
+[0.20.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.20.0
 [0.19.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.19.0
 [0.18.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.18.0
 [0.17.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.17.0
