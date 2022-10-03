@@ -6,12 +6,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.21.0] - 2022-10-03
+### Added
+- Added PTE reserved exception test
+- Added xtval value test
+
 ## [0.20.0] - 2022-09-14
 ### Added
-- Add CSR semantics test
-- Add CSR counters test
-- Add LR/SC test
-- Add mcycle write test
+- Added CSR semantics test
+- Added CSR counters test
+- Added LR/SC test
+- Added mcycle write test
 
 ### Changed
 - Updated RISC-V tests.
@@ -66,7 +71,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.20.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.21.0...HEAD
+[0.21.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.21.0
 [0.20.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.20.0
 [0.19.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.19.0
 [0.18.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.18.0
