@@ -73,7 +73,7 @@ _start:
  * a0: a pma_did_const(x)
  * ret: pointer to pma entry */
 find_pma_by_did:
-    li t0, PMA_START_DEF;
+    li t0, PMA_SHADOW_PMAS_START_DEF;
     li t2, PMA_START_DID_MASK;
     /* is the pma array empty? */
     ld t1, O_LENGTH (t0);
