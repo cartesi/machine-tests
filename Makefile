@@ -76,10 +76,11 @@ $(SRCCLEAN) $(DEPCLEAN): %.clean:
 
 copy-riscv-tests: $(BUILDDIR)
 	cp -a $(DEPDIR)/riscv-tests/isa/*.bin $(DEPDIR)/riscv-tests/isa/*.dump $(BUILDDIR)
+	cd $(DEPDIR)/riscv-tests/isa && find . -maxdepth 1 -type f ! -name "*.*" -exec cp -a {} $(BUILDDIR)/{}.elf \;
 
 install: copy-riscv-tests
 	mkdir -p $(INSTALLDIR)
-	cp -a $(BUILDDIR)/*.bin $(BUILDDIR)/*.dump $(INSTALLDIR)
+	cp -a $(BUILDDIR)/*.bin $(BUILDDIR)/*.dump $(BUILDDIR)/*.elf $(INSTALLDIR)
 
 toolchain-env:
 	@docker run --hostname toolchain-env -it --rm \

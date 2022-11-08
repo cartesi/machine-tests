@@ -24,31 +24,35 @@ CXX = $(RISCV_PREFIX)g++
 OBJCOPY = $(RISCV_PREFIX)objcopy
 OBJDUMP = $(RISCV_PREFIX)objdump
 
-CFLAGS=-march=rv64g -mabi=lp64d -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
-CXXFLAGS=-march=rv64g -mabi=lp64d -static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+CFLAGS=-march=rv64g -mabi=lp64d -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+CXXFLAGS=-march=rv64g -mabi=lp64d -static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 
 SRCS  := $(wildcard *.S)
-TMPS  := $(SRCS:.S=.out)
-BINS  := $(TMPS:%.out=$(BUILD_DIR)/%.bin)
-DUMPS := $(TMPS:%.out=$(BUILD_DIR)/%.dump)
+TMPS  := $(SRCS:.S=.elf)
+BINS  := $(TMPS:%.elf=$(BUILD_DIR)/%.bin)
+DUMPS := $(TMPS:%.elf=$(BUILD_DIR)/%.dump)
 
 .DEFAULT_GOAL := all
 
-$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.out
+$(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
 	$(OBJCOPY) -S -O binary $< $@
 
-$(BUILD_DIR)/%.dump: $(BUILD_DIR)/%.out
+$(BUILD_DIR)/%.dump: $(BUILD_DIR)/%.elf
 	$(OBJDUMP) -d $< > $@
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 # assembly
-$(BUILD_DIR)/%.out: %.S $(BUILD_DIR)
-	$(CC) $(CFLAGS) $(patsubst %.ld,-T%.ld,$(wildcard $(patsubst %.S,%.ld,$<))) -o $@ $<
+$(BUILD_DIR)/%.elf: %.S $(BUILD_DIR)
+	$(CC) $(CFLAGS) -Tlink.ld -o $@ $<
 
+$(BUILD_DIR)/bootstrap.elf: bootstrap.S $(BUILD_DIR)
+	$(CC) $(CFLAGS) -Tbootstrap.ld -o $@ $<
+
+.PRECIOUS: $(BUILD_DIR)/%.elf
 .PHONY: all clean copy
 all: $(BINS) $(DUMPS)
 
 clean:
-	$(RM) -r $(BUILD_DIR)/*.out $(BUILD_DIR)/*.bin
+	$(RM) -r $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.dump
