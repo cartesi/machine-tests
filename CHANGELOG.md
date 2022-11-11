@@ -6,6 +6,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.23.0] - 2022-11-17
+### Added
+- Added RISC-V floating-point tests
+
+### Changed
+- Changed PMA board address to the new range in microarchitecture
+- Updated toolchain version to v0.12.0
+
 ## [0.22.0] - 2022-10-19
 ### Changed
 - Bump marchid to 0xd
@@ -75,7 +83,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.21.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.23.0...HEAD
+[0.23.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.23.0
+[0.22.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.22.0
 [0.21.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.21.0
 [0.20.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.20.0
 [0.19.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.19.0
