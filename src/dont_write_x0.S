@@ -14,6 +14,8 @@
 
 #include <pma-defines.h>
 
+#define MSTATUS_FS_MASK     (3<<13)
+
 // Uses HTIF to exit the emulator with exit code in an immediate
 #define exit_imm(imm) \
 	li gp, imm; \
@@ -26,83 +28,112 @@
 _start:
 	// Set the exception handler to trap
 	// This is just in case an exception happens
-	la t0, trap;
+	la t0, fail;
 	csrw mtvec, t0;
+
+    // Enable FS state
+    li t3, MSTATUS_FS_MASK;
+    csrs mstatus, t3;
+
+    // Load float f0 and f1
+	li t3, 0xff800000 // -inf
+	fmv.w.x f0, t3;
+	li t3, 0xfff0000000000000 // -inf
+	fmv.d.x f1, t3;
 
 execute_LR:
 	la t1, foo;
 	lr.w x0, (t0);
-	beqz x0, execute_SC;
-	exit_imm(2)
+	bnez x0, fail;
 
 execute_SC:
 	sc.w x0, t0, (t1);
-	beqz x0, execute_AMO;
-	exit_imm(3)
+	bnez x0, fail;
 
 execute_AMO:
 	amoadd.w x0, t0, (t1);
-	beqz x0, execute_csr_RW;
-	exit_imm(4)
+	bnez x0, fail;
 
 execute_csr_RW:
 	csrrw x0, sscratch, x0;
-	beqz x0, execute_csr_SC;
-	exit_imm(5)
+	bnez x0, fail;
 
 execute_csr_SC:
 	csrrs x0, sscratch, t1;
-	beqz x0, execute_csr_SCI;
-	exit_imm(6)
+	bnez x0, fail;
 
 execute_csr_SCI:
 	csrrsi x0, sscratch, 4;
-	beqz x0, execute_arithmetic;
-	exit_imm(7)
+	bnez x0, fail;
 
 execute_arithmetic:
 	add x0, t0, t1;
-	beqz x0, execute_arithmetic_imm;
-	exit_imm(8)
+	bnez x0, fail;
 
 execute_arithmetic_imm:
 	addi x0, x0, 9;
-	beqz x0, execute_L;
-	exit_imm(9)
+	bnez x0, fail;
 
 execute_L:
 	lb x0, (t1)
-	beqz x0, execute_LUI;
-	exit_imm(10)
+	bnez x0, fail;
 
 execute_LUI:
 	lui x0, 0x00001;
-	beqz x0, execute_AUIPC;
-	exit_imm(11)
+	bnez x0, fail;
 
 execute_AUIPC:
 	auipc x0, 0x00001;
-	beqz x0, execute_JAL;
-	exit_imm(12)
+	bnez x0, fail;
 
 execute_JAL:
 	jal x0, jal_test;
 jal_test:
-	beqz x0, execute_JALR;
-	exit_imm(13)
+	bnez x0, fail;
 
 execute_JALR:
 	la t2, jalr_test;
 	jalr x0, t2, 0;
 jalr_test:
-	beqz x0, success;
-	exit_imm(14)
+	bnez x0, fail;
+
+execute_FMV_X_W:
+	fmv.x.w	x0, f0;
+	bnez x0, fail;
+
+execute_FMV_X_D:
+	fmv.x.d	x0, f1;
+	bnez x0, fail;
+
+execute_FCVT_W_S:
+	fcvt.w.s x0, f0;
+	bnez x0, fail;
+
+execute_FCVT_L_D:
+	fcvt.l.d x0, f1;
+	bnez x0, fail;
+
+execute_FCLASS_S:
+	fclass.s x0, f0;
+	bnez x0, fail;
+
+execute_FCLASS_D:
+	fclass.d x0, f1;
+	bnez x0, fail;
+
+execute_FEQ_S:
+	feq.s x0, f0, f0;
+	bnez x0, fail;
+
+execute_FEQ_D:
+	feq.d x0, f1, f1;
+	bnez x0, fail;
 
 success:
 	exit_imm(0);
 
 // catch exception and exit
-trap:
+fail:
 	exit_imm(1);
 
 // Exits via HTIF using gp content as the exit code

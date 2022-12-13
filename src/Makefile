@@ -12,11 +12,7 @@
 #
 
 BUILD_DIR ?= $(abspath ../build)
-SRC_DIR ?= .
-
-ifneq ($(EMULATOR_INC),)
-EMULATOR_FLAGS= -I$(EMULATOR_INC)
-endif
+RISCV_TESTS_DIR ?= $(abspath ../third-party/riscv-tests)
 
 RISCV_PREFIX = riscv64-cartesi-linux-gnu-
 CC  = $(RISCV_PREFIX)gcc
@@ -24,8 +20,16 @@ CXX = $(RISCV_PREFIX)g++
 OBJCOPY = $(RISCV_PREFIX)objcopy
 OBJDUMP = $(RISCV_PREFIX)objdump
 
-CFLAGS=-march=rv64g -mabi=lp64d -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
-CXXFLAGS=-march=rv64g -mabi=lp64d -static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -g -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+INCS=-I$(BUILD_DIR)/include -I$(RISCV_TESTS_DIR)/env/p -I$(RISCV_TESTS_DIR)/env -I$(RISCV_TESTS_DIR)/isa/macros/scalar
+
+ifneq ($(EMULATOR_INC),)
+INCS+=-I$(EMULATOR_INC)
+else
+INCS+=-I$(abspath ../lib/machine-emulator-defines)
+endif
+
+CFLAGS=-g -march=rv64g -mabi=lp64d -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles $(INCS)
+CXXFLAGS=-fno-exceptions $(CFLAGS)
 
 SRCS  := $(wildcard *.S)
 TMPS  := $(SRCS:.S=.elf)
@@ -44,7 +48,7 @@ $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)
 
 # assembly
-$(BUILD_DIR)/%.elf: %.S $(BUILD_DIR)
+$(BUILD_DIR)/%.elf: %.S | $(BUILD_DIR)
 	$(CC) $(CFLAGS) -Tlink.ld -o $@ $<
 
 $(BUILD_DIR)/bootstrap.elf: bootstrap.S $(BUILD_DIR)

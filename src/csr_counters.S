@@ -12,6 +12,8 @@
  *
  */
 
+// This test case tests all hardware counters in different privilege modes
+
 #include <pma-defines.h>
 
 #define exit_imm(imm) \
@@ -27,7 +29,24 @@
     csrwi minstret, n;
 
 #define MSTATUS_MPP_MASK 0x1800
+#define MSTATUS_SPP_MASK 0x100
 #define MSTATUS_MPP_S    0x800
+#define MCAUSE_INSN_ADDRESS_MISALIGNED 0
+#define MCAUSE_ILLEGAL_INSN 2
+#define MCAUSE_BREAKPOINT 3
+#define MCAUSE_USER_ECALL 8
+#define MCAUSE_MACHINE_ECALL 11
+
+#define CSR_WRITE_AND_READ_0(csrname) \
+    li t0, 1; \
+    csrw csrname, t0; \
+    csrr t0, csrname; \
+    bne t0, zero, fail;
+
+#define CSR_READ_FAIL_EXPECTED(csrname) \
+    li t6, 0; \
+    csrr t0, csrname; \
+    beq t6, zero, fail;
 
 // Section with code
 .section .text.init
@@ -38,31 +57,92 @@ _start:
     la t0, fail;
     csrw mtvec, t0;
 
+    // Illegal instruction counter
+    li t6, 0;
+
     // Expect time read to be valid
+    li t0, 0;
     rdtime t0;
 
     // Expect cycle greater than 0
+    li t0, 0;
     rdcycle t0;
     beq t0, zero, fail;
 
     // Expect instret to be greater than 0
+    li t0, 0;
     rdinstret t0;
     beq t0, zero, fail;
 
     // Expect mcountinhibit to read 0
+    li t0, 1;
     csrr t0, mcountinhibit;
     bne t0, zero, fail;
 
-    // Expect all hpmcounters to read 0
-    csrr t0, hpmcounter3;
-    bne t0, zero, fail;
-    csrr t0, hpmcounter13;
-    bne t0, zero, fail;
-    csrr t0, hpmcounter31;
-    bne t0, zero, fail;
+    // Expect all hpmcounters to always read 0 even after writing to it
+    CSR_WRITE_AND_READ_0(mhpmcounter3)
+    CSR_WRITE_AND_READ_0(mhpmcounter4)
+    CSR_WRITE_AND_READ_0(mhpmcounter5)
+    CSR_WRITE_AND_READ_0(mhpmcounter6)
+    CSR_WRITE_AND_READ_0(mhpmcounter7)
+    CSR_WRITE_AND_READ_0(mhpmcounter8)
+    CSR_WRITE_AND_READ_0(mhpmcounter9)
+    CSR_WRITE_AND_READ_0(mhpmcounter10)
+    CSR_WRITE_AND_READ_0(mhpmcounter11)
+    CSR_WRITE_AND_READ_0(mhpmcounter12)
+    CSR_WRITE_AND_READ_0(mhpmcounter13)
+    CSR_WRITE_AND_READ_0(mhpmcounter14)
+    CSR_WRITE_AND_READ_0(mhpmcounter15)
+    CSR_WRITE_AND_READ_0(mhpmcounter16)
+    CSR_WRITE_AND_READ_0(mhpmcounter17)
+    CSR_WRITE_AND_READ_0(mhpmcounter18)
+    CSR_WRITE_AND_READ_0(mhpmcounter19)
+    CSR_WRITE_AND_READ_0(mhpmcounter20)
+    CSR_WRITE_AND_READ_0(mhpmcounter21)
+    CSR_WRITE_AND_READ_0(mhpmcounter22)
+    CSR_WRITE_AND_READ_0(mhpmcounter23)
+    CSR_WRITE_AND_READ_0(mhpmcounter24)
+    CSR_WRITE_AND_READ_0(mhpmcounter25)
+    CSR_WRITE_AND_READ_0(mhpmcounter26)
+    CSR_WRITE_AND_READ_0(mhpmcounter27)
+    CSR_WRITE_AND_READ_0(mhpmcounter28)
+    CSR_WRITE_AND_READ_0(mhpmcounter29)
+    CSR_WRITE_AND_READ_0(mhpmcounter30)
+    CSR_WRITE_AND_READ_0(mhpmcounter31)
+
+    // Expect all hpmevents to always read 0
+    CSR_WRITE_AND_READ_0(mhpmevent3)
+    CSR_WRITE_AND_READ_0(mhpmevent4)
+    CSR_WRITE_AND_READ_0(mhpmevent5)
+    CSR_WRITE_AND_READ_0(mhpmevent6)
+    CSR_WRITE_AND_READ_0(mhpmevent7)
+    CSR_WRITE_AND_READ_0(mhpmevent8)
+    CSR_WRITE_AND_READ_0(mhpmevent9)
+    CSR_WRITE_AND_READ_0(mhpmevent10)
+    CSR_WRITE_AND_READ_0(mhpmevent11)
+    CSR_WRITE_AND_READ_0(mhpmevent12)
+    CSR_WRITE_AND_READ_0(mhpmevent13)
+    CSR_WRITE_AND_READ_0(mhpmevent14)
+    CSR_WRITE_AND_READ_0(mhpmevent15)
+    CSR_WRITE_AND_READ_0(mhpmevent16)
+    CSR_WRITE_AND_READ_0(mhpmevent17)
+    CSR_WRITE_AND_READ_0(mhpmevent18)
+    CSR_WRITE_AND_READ_0(mhpmevent19)
+    CSR_WRITE_AND_READ_0(mhpmevent20)
+    CSR_WRITE_AND_READ_0(mhpmevent21)
+    CSR_WRITE_AND_READ_0(mhpmevent22)
+    CSR_WRITE_AND_READ_0(mhpmevent23)
+    CSR_WRITE_AND_READ_0(mhpmevent24)
+    CSR_WRITE_AND_READ_0(mhpmevent25)
+    CSR_WRITE_AND_READ_0(mhpmevent26)
+    CSR_WRITE_AND_READ_0(mhpmevent27)
+    CSR_WRITE_AND_READ_0(mhpmevent28)
+    CSR_WRITE_AND_READ_0(mhpmevent29)
+    CSR_WRITE_AND_READ_0(mhpmevent30)
+    CSR_WRITE_AND_READ_0(mhpmevent31)
 
     // Set a trap that will ignore the failing instruction and resume to next instruction
-    la t0, skip_instruction_trap;
+    la t0, skip_insn_trap;
     csrw mtvec, t0;
 
     // No instructions between instret read and write, it should stay 0
@@ -81,7 +161,7 @@ _start:
 
     // ECALL
     set_minstret(0);
-    ebreak; // exception raised, increment only 4 trap instructions
+    ecall; // exception raised, increment only 4 trap instructions
     check_minstret(4);
 
     // LR/SC for invalid addresses
@@ -100,48 +180,175 @@ _start:
     sw t0, 0(t0); // exception raised, increment only 4 trap instructions
     check_minstret(10);
 
-	// If RVC is enabled, skip to next test
-    csrr t2, misa;
-    andi t2, t2, 1 << ('c' - 'a');
-    bnez t2, supervisor_mode;
-    // Jump into a misaligned address
-    set_minstret(0);
-    la a1, _start; // increment 2 instructions (auipc + addi)
-    jalr x0, 3(a1); // exception raised increment only trap instructions
-    check_minstret(6);
+    // Set a trap that will ignore the failing illegal instructions and resume to next instruction
+    la t0, skip_illegal_insn_trap;
+    csrw mtvec, t0;
 
-supervisor_mode:
-    // Enter supervisor mode.
+    // Allow reading time/cycle/instret in S-mode
+    li t0, 7
+    csrw mcounteren, t0
+    csrr t1, mcounteren
+    bne t1, t0, fail
+
+    // Allow delegation user ECALL in S-mode
+    li t0, (1 << MCAUSE_USER_ECALL)
+    csrw medeleg, t0
+    li t1, 0
+    csrr t1, medeleg
+    bne t1, t0, fail
+
+    // Enter supervisor mode
     la t0, in_supervisor
     csrw mepc, t0
     li t0, MSTATUS_MPP_MASK
     csrc mstatus, t0
-    li t1, MSTATUS_MPP_S
-    csrs mstatus, t1
+    li t0, MSTATUS_MPP_S
+    csrs mstatus, t0
     mret
+    exit_imm(1);
 
 in_supervisor:
-    // Expect time read to be valid
-    rdtime t0;
-
     // Expect cycle greater than 0
-    rdcycle t0;
-    beq t0, zero, fail;
+    li t0, 0
+    rdcycle t0
+    beq t0, zero, fail
 
     // Expect instret to be greater than 0
-    rdinstret t0;
-    beq t0, zero, fail;
+    li t0, 0
+    rdinstret t0
+    beq t0, zero, fail
+
+    // Expect time read to be valid
+    li t6, 0
+    rdtime t0
+    bne t6, zero, fail
+
+    // Expect all hpmcounters reads to fail in supervisor mode
+    CSR_READ_FAIL_EXPECTED(hpmcounter3)
+    CSR_READ_FAIL_EXPECTED(hpmcounter4)
+    CSR_READ_FAIL_EXPECTED(hpmcounter5)
+    CSR_READ_FAIL_EXPECTED(hpmcounter6)
+    CSR_READ_FAIL_EXPECTED(hpmcounter7)
+    CSR_READ_FAIL_EXPECTED(hpmcounter8)
+    CSR_READ_FAIL_EXPECTED(hpmcounter9)
+    CSR_READ_FAIL_EXPECTED(hpmcounter10)
+    CSR_READ_FAIL_EXPECTED(hpmcounter11)
+    CSR_READ_FAIL_EXPECTED(hpmcounter12)
+    CSR_READ_FAIL_EXPECTED(hpmcounter13)
+    CSR_READ_FAIL_EXPECTED(hpmcounter14)
+    CSR_READ_FAIL_EXPECTED(hpmcounter15)
+    CSR_READ_FAIL_EXPECTED(hpmcounter16)
+    CSR_READ_FAIL_EXPECTED(hpmcounter17)
+    CSR_READ_FAIL_EXPECTED(hpmcounter18)
+    CSR_READ_FAIL_EXPECTED(hpmcounter19)
+    CSR_READ_FAIL_EXPECTED(hpmcounter20)
+    CSR_READ_FAIL_EXPECTED(hpmcounter21)
+    CSR_READ_FAIL_EXPECTED(hpmcounter22)
+    CSR_READ_FAIL_EXPECTED(hpmcounter23)
+    CSR_READ_FAIL_EXPECTED(hpmcounter24)
+    CSR_READ_FAIL_EXPECTED(hpmcounter25)
+    CSR_READ_FAIL_EXPECTED(hpmcounter26)
+    CSR_READ_FAIL_EXPECTED(hpmcounter27)
+    CSR_READ_FAIL_EXPECTED(hpmcounter28)
+    CSR_READ_FAIL_EXPECTED(hpmcounter29)
+    CSR_READ_FAIL_EXPECTED(hpmcounter30)
+    CSR_READ_FAIL_EXPECTED(hpmcounter31)
+
+    // Allow U-mode to read access to cycle
+    li t0, 1
+    csrw scounteren, t0
+    csrr t1, scounteren
+    bne t1, t0, fail
+
+    // Set a trap handler for user mode
+    la t0, ecall_trap
+    csrw stvec, t0
+
+    // Enter user mode
+    la t0, in_user1
+    csrw sepc, t0
+    li t0, MSTATUS_SPP_MASK
+    csrc sstatus, t0
+    sret
+    exit_imm(1);
+
+in_user1:
+    // We should be able to read cycle
+    li t0, 0
+    csrr t0, cycle
+    beq t0, zero, fail
+
+    // We should not be able to read instret
+    li t0, 0
+    li t6, 0
+    rdinstret t0
+    bne t0, zero, fail
+    beq t6, zero, fail
+
+    // We should not be able to read time
+    li t0, 0
+    li t6, 0
+    rdtime t0
+    bne t0, zero, fail
+    beq t6, zero, fail
+
+    ecall
+    exit_imm(1);
+
+ecall_trap:
+    // We should be coming from a U-mode ECALL back to S-mode
+    li t1, MCAUSE_USER_ECALL
+    csrr t0, scause
+    bne t0, t1, fail
+
+    // ECALL should tval should be 0
+    csrr t0, stval
+    bne t0, zero, fail
+
+    // Disallow reading cycle in U-mode
+    li t0, 0
+    csrw scounteren, t0
+    csrr t1, scounteren
+    bne t0, t1, fail
+
+    // Enter user mode again
+    la t0, in_user2
+    csrw sepc, t0
+    li t0, MSTATUS_SPP_MASK
+    csrc sstatus, t0
+    sret
+    exit_imm(1);
+
+in_user2:
+    // We should not be able to read cycle
+    li t0, 0
+    li t6, 0
+    rdcycle t0
+    bne t0, zero, fail
+    beq t6, zero, fail
 
     exit_imm(0);
 
-fail:
-    exit_imm(1);
+skip_illegal_insn_trap:
+    csrr gp, mcause
+    li t4, MCAUSE_ILLEGAL_INSN
+    bne gp, t4, exit
+    csrr t4, mepc
+    addi t4, t4, 4
+    csrw mepc, t4
+    addi t6, t6, 1
+    mret
+    exit_imm(1)
 
-skip_instruction_trap:
-    csrr t0, mepc;
-    addi t0, t0, 4;
-    csrw mepc, t0;
-    mret;
+skip_insn_trap:
+    csrr t6, mepc
+    addi t6, t6, 4
+    csrw mepc, t6
+    mret
+    exit_imm(1)
+
+fail:
+    exit_imm(1)
 
 // Exits via HTIF using gp content as the exit code
 exit:
