@@ -82,7 +82,6 @@ _start:
     htif_yield(HTIF_YIELD_MANUAL_DEF, HTIF_YIELD_REASON_TX_EXCEPTION_DEF, 18)
     check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_MANUAL_DEF, 0);
 
-
     // Test yield, auto
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_PROGRESS_DEF, 20)
     check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
@@ -104,6 +103,10 @@ _start:
 
     htif_yield(HTIF_YIELD_AUTOMATIC_DEF, HTIF_YIELD_REASON_TX_REPORT_DEF, 27)
     check_htif_ack(HTIF_DEVICE_YIELD_DEF, HTIF_YIELD_AUTOMATIC_DEF, 0);
+
+    // Test if invalid yields commands is not acked, they are silently ignored
+    htif_yield(0xff, HTIF_YIELD_REASON_PROGRESS_DEF, 1)
+    bnez a0, trap
 
     // halt with payload 42
     exit_imm(42);

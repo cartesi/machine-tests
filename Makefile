@@ -47,6 +47,7 @@ clean: $(SRCCLEAN)
 
 depclean: $(DEPCLEAN) clean
 	rm -rf $(BUILDDIR)
+	$(MAKE) -C $@ clean
 
 distclean: clean
 	rm -rf $(BUILDDIR) $(DOWNLOADDIR) $(DEPDIRS)
@@ -60,6 +61,7 @@ lib/machine-emulator-defines/pma-defines.h:
 $(DEPDIR)/riscv-tests:
 	cd $@ && ./configure
 	$(MAKE) -C $@ RISCV_PREFIX=$(RISCV_PREFIX)
+	$(MAKE) copy-riscv-tests
 
 submodules:
 	git submodule update --init --recursive third-party/riscv-tests
