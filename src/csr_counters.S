@@ -100,12 +100,17 @@ _start:
     sw t0, 0(t0); // exception raised, increment only 4 trap instructions
     check_minstret(10);
 
+	// If RVC is enabled, skip to next test
+    csrr t2, misa;
+    andi t2, t2, 1 << ('c' - 'a');
+    bnez t2, supervisor_mode;
     // Jump into a misaligned address
     set_minstret(0);
     la a1, _start; // increment 2 instructions (auipc + addi)
     jalr x0, 3(a1); // exception raised increment only trap instructions
     check_minstret(6);
 
+supervisor_mode:
     // Enter supervisor mode.
     la t0, in_supervisor
     csrw mepc, t0

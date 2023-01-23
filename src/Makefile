@@ -24,8 +24,8 @@ CXX = $(RISCV_PREFIX)g++
 OBJCOPY = $(RISCV_PREFIX)objcopy
 OBJDUMP = $(RISCV_PREFIX)objdump
 
-CFLAGS=-static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
-CXXFLAGS=-static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+CFLAGS=-march=rv64g -mabi=lp64d -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
+CXXFLAGS=-march=rv64g -mabi=lp64d -static -fno-exceptions -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles -I$(BUILD_DIR)/include $(EMULATOR_FLAGS)
 
 SRCS  := $(wildcard *.S)
 TMPS  := $(SRCS:.S=.out)
@@ -52,5 +52,3 @@ all: $(BINS) $(DUMPS)
 
 clean:
 	$(RM) -r $(BUILD_DIR)/*.out $(BUILD_DIR)/*.bin
-
-

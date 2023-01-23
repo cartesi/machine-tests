@@ -28,7 +28,7 @@ DEPDIRS := $(addprefix $(DEPDIR)/,riscv-tests)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
-TOOLCHAIN_TAG ?= 0.12.0
+TOOLCHAIN_TAG ?= 0.13.0
 
 ifeq ($(EMULATOR_INC),)
 EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
@@ -97,8 +97,8 @@ toolchain-exec:
 		-e GROUP=$$(id -g -n) \
 		-e UID=$$(id -u) \
 		-e GID=$$(id -g) \
-		-v `pwd`:/opt/cartesi/machine-emulator-rom \
-		-w /opt/cartesi/machine-emulator-rom \
+		-v `pwd`:/opt/cartesi/machine-tests \
+		-w /opt/cartesi/machine-tests \
 		$(TOOLCHAIN_DOCKER_REPOSITORY):$(TOOLCHAIN_TAG) $(CONTAINER_COMMAND)
 
 .PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)
