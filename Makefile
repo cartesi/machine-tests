@@ -16,9 +16,6 @@ UNAME:=$(shell uname)
 PREFIX = /opt/cartesi
 INSTALLDIR = $(PREFIX)/tests
 
-EMULATOR_INC =
-EMULATOR_DEP =
-
 DEPDIR := third-party
 SRCDIR := $(abspath src)
 BUILDDIR = $(abspath build)
@@ -29,11 +26,6 @@ DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
 TOOLCHAIN_TAG ?= 0.13.0
-
-ifeq ($(EMULATOR_INC),)
-EMULATOR_DEP = lib/machine-emulator-defines/pma-defines.h
-EMULATOR_INC = $(abspath $(dir $(EMULATOR_DEP)))
-endif
 
 RISCV_PREFIX = riscv64-cartesi-linux-gnu-
 RVCC  = $(RISCV_PREFIX)gcc
@@ -66,12 +58,12 @@ $(DEPDIR)/riscv-tests:
 submodules:
 	git submodule update --init --recursive third-party/riscv-tests
 
-downloads: submodules $(EMULATOR_DEP)
+downloads: submodules
 
 dep: $(BUILDDIR) $(DEPDIRS)
 
 $(SRCDIR):
-	$(MAKE) -C $@ RISCV_PREFIX=$(RISCV_PREFIX) EMULATOR_INC=$(EMULATOR_INC) $(TARGET)
+	$(MAKE) -C $@ RISCV_PREFIX=$(RISCV_PREFIX) $(TARGET)
 
 $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean

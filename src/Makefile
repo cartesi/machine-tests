@@ -20,13 +20,12 @@ CXX = $(RISCV_PREFIX)g++
 OBJCOPY = $(RISCV_PREFIX)objcopy
 OBJDUMP = $(RISCV_PREFIX)objdump
 
-INCS=-I$(BUILD_DIR)/include -I$(RISCV_TESTS_DIR)/env/p -I$(RISCV_TESTS_DIR)/env -I$(RISCV_TESTS_DIR)/isa/macros/scalar
-
-ifneq ($(EMULATOR_INC),)
-INCS+=-I$(EMULATOR_INC)
-else
-INCS+=-I$(abspath ../lib/machine-emulator-defines)
-endif
+INCS=\
+	-I$(BUILD_DIR)/include \
+	-I$(RISCV_TESTS_DIR)/env/p \
+	-I$(RISCV_TESTS_DIR)/env \
+	-I$(RISCV_TESTS_DIR)/isa/macros/scalar \
+	-I$(abspath ../lib/machine-emulator-defines)
 
 CFLAGS=-g -march=rv64g -mabi=lp64d -static -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles $(INCS)
 CXXFLAGS=-fno-exceptions $(CFLAGS)
