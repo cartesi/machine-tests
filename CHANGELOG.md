@@ -6,6 +6,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.24.0] - 2023-02-10
+### Added
+- Added RISC-V compressed instructions tests
+
+### Changed
+- Updated toolchain version to v0.13.0
+
 ## [0.23.0] - 2022-11-17
 ### Added
 - Added RISC-V floating-point tests
@@ -83,7 +90,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.23.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.24.0...HEAD
+[0.24.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.24.0
 [0.23.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.23.0
 [0.22.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.22.0
 [0.21.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.21.0
