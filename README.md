@@ -18,6 +18,7 @@ The Cartesi Machine Tests is a repository containing RISC-V testing code.
 $ make downloads
 $ make toolchain-env
 [toolchain-env]$ make dep
+[toolchain-env]$ make uarch
 [toolchain-env]$ make
 [toolchain-env]$ exit 
 $ make INSTALLDIR=/my/path install 

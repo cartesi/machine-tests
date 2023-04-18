@@ -65,6 +65,9 @@ dep: $(BUILDDIR) $(DEPDIRS)
 $(SRCDIR):
 	$(MAKE) -C $@ RISCV_PREFIX=$(RISCV_PREFIX) $(TARGET)
 
+uarch:
+	$(MAKE) -C $(SRCDIR) RISCV_PREFIX=$(RISCV_PREFIX) $(TARGET) uarch
+
 $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
 

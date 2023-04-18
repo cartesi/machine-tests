@@ -23,7 +23,9 @@ jobs:
         run: make toolchain-exec CONTAINER_COMMAND="/usr/bin/make dep -j$(nproc)"
 
       - name: Build
-        run: make toolchain-exec CONTAINER_COMMAND="/usr/bin/make -j$(nproc)"
+        run: |
+          make toolchain-exec CONTAINER_COMMAND="/usr/bin/make -j$(nproc)"
+          make toolchain-exec CONTAINER_COMMAND="/usr/bin/make uarch -j$(nproc)"
 
       - name: Install
         run: make install

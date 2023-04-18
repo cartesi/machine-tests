@@ -55,7 +55,7 @@ $(BUILD_DIR)/bootstrap.elf: bootstrap.S $(BUILD_DIR)
 
 .PRECIOUS: $(BUILD_DIR)/%.elf
 .PHONY: all clean copy uarch
-all: $(BINS) $(DUMPS) uarch
+all: $(BINS) $(DUMPS)
 
 uarch:
 	make -C uarch
