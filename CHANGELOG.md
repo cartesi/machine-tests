@@ -6,6 +6,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+
+## [0.26.0] - 2023-04-18
+### Added
+- Added separated build for uarch/rv64ui tests
+
+### Changed
+- Updated toolchain image to v0.14.0
+- Updated machine-emulator-defines
+
 ## [0.25.0] - 2023-02-16
 ### Added
 - Added a big set of floating-point tests
@@ -102,7 +111,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.25.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.26.0...HEAD
+[0.26.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.26.0
 [0.25.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.25.0
 [0.24.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.24.0
 [0.23.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.23.0
