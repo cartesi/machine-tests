@@ -1,5 +1,6 @@
 UARCH_ENV_DIR := $(abspath .)
-TESTS_SRC_DIR := $(abspath ../../third-party/riscv-tests/isa)
+DEST_DIR := $(abspath ../../third-party/riscv-tests/isa)
+SRC_DIR := $(abspath ../../third-party/riscv-tests/isa/rv64ui)
 LIB_DIR := $(abspath ../../lib)
 RISCV_PREFIX ?= riscv64-cartesi-linux-gnu-
 RISCV_GCC ?= $(RISCV_PREFIX)gcc
@@ -29,17 +30,25 @@ UARCH_TESTS = $(addprefix rv64ui-uarch-, $(TESTS))
 UARCH_TESTS_BIN = $(addsuffix .bin, $(UARCH_TESTS))
 UARCH_TESTS_DUMP = $(addsuffix .dump, $(UARCH_TESTS))
 
-all:  $(UARCH_TESTS_BIN) $(UARCH_TESTS_DUMP)
+DEST_UARCH_TESTS = $(addprefix $(DEST_DIR)/, $(UARCH_TESTS))
+DEST_UARCH_TESTS_BIN = $(addprefix $(DEST_DIR)/, $(UARCH_TESTS_BIN))
+DEST_UARCH_TESTS_DUMP = $(addprefix $(DEST_DIR)/, $(UARCH_TESTS_DUMP))
 
-rv64ui-uarch-%: $(TESTS_SRC_DIR)/rv64ui/%.S
+all:  $(DEST_UARCH_TESTS_BIN)  $(DEST_UARCH_TESTS_DUMP)
+
+clean:
+	rm -f $(DEST_UARCH_TESTS) $(DEST_UARCH_TESTS_BIN) $(DEST_UARCH_TESTS_DUMP)
+
+$(DEST_DIR)/rv64ui-uarch-%: $(SRC_DIR)/%.S
 	$(RISCV_GCC) $(RISCV_GCC_OPTS) -I$(UARCH_ENV_DIR) \
-		-I$(TESTS_SRC_DIR)/macros/scalar \
+		-I$(SRC_DIR)/../macros/scalar \
 		-I$(LIB_DIR)/machine-emulator-defines \
 		-T$(UARCH_ENV_DIR)/link.ld \
-		$< -o $(TESTS_SRC_DIR)/$@
+		$(SRC_DIR)/$*.S -o $(DEST_DIR)/rv64ui-uarch-$*
 
 %.bin: %
-	$(RISCV_OBJCOPY) $(TESTS_SRC_DIR)/$<  $(TESTS_SRC_DIR)/$@
+	$(RISCV_OBJCOPY) $* $*.bin
 
 %.dump: %
-	$(RISCV_OBJDUMP) $(TESTS_SRC_DIR)/$< > $(TESTS_SRC_DIR)/$@
+	$(RISCV_OBJDUMP) $* > $*.dump
+
