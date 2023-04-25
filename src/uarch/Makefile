@@ -1,13 +1,15 @@
+PREFIX = /opt/cartesi
+INSTALLDIR = $(PREFIX)/tests
 UARCH_ENV_DIR := $(abspath .)
-DEST_DIR := $(abspath ../../third-party/riscv-tests/isa)
-SRC_DIR := $(abspath ../../third-party/riscv-tests/isa/rv64ui)
 LIB_DIR := $(abspath ../../lib)
 RISCV_PREFIX ?= riscv64-cartesi-linux-gnu-
 RISCV_GCC ?= $(RISCV_PREFIX)gcc
 RISCV_GCC_OPTS ?= -static  -march=rv64i -mabi=lp64 -mcmodel=medany -fvisibility=hidden -nostdlib -nostartfiles
 RISCV_OBJDUMP ?= $(RISCV_PREFIX)objdump --disassemble-all --disassemble-zeroes --section=.text --section=.text.startup --section=.text.init --section=.data
 RISCV_OBJCOPY ?= $(RISCV_PREFIX)objcopy -S -O binary
-TESTS = \
+
+# Tests provided by third party riscv tests
+THIRDPARTY_TESTS = \
 	add addi addiw addw \
 	and andi \
 	auipc \
@@ -24,27 +26,61 @@ TESTS = \
 	sra srai sraiw sraw \
 	srl srli srliw srlw \
 	sub subw \
-	xor xori \
+	xor xori
 
-UARCH_TESTS = $(addprefix rv64ui-uarch-, $(TESTS))
-UARCH_TESTS_BIN = $(addsuffix .bin, $(UARCH_TESTS))
-UARCH_TESTS_DUMP = $(addsuffix .dump, $(UARCH_TESTS))
+THIRDPARTY_SRC_DIR := $(abspath ../../third-party/riscv-tests/isa/rv64ui)
+THIRDPARTY_BUILD_DIR := $(abspath ./third_party_build)
+THIRDPARTY_TEST_NAMES = $(addprefix rv64ui-uarch-, $(THIRDPARTY_TESTS))
+THIRDPARTY_TESTS_BIN_NAMES = $(addsuffix .bin, $(THIRDPARTY_TEST_NAMES))
+THIRDPARTY_TESTS_DUMP_NAMES = $(addsuffix .dump, $(THIRDPARTY_TEST_NAMES))
+TARGET_THIRDPARTY_TESTS = $(addprefix $(THIRDPARTY_BUILD_DIR)/, $(THIRDPARTY_TEST_NAMES))
 
-DEST_UARCH_TESTS = $(addprefix $(DEST_DIR)/, $(UARCH_TESTS))
-DEST_UARCH_TESTS_BIN = $(addprefix $(DEST_DIR)/, $(UARCH_TESTS_BIN))
-DEST_UARCH_TESTS_DUMP = $(addprefix $(DEST_DIR)/, $(UARCH_TESTS_DUMP))
+# Tests provided by us
+TESTS = fence
+SRC_DIR = $(abspath .)
+BUILD_DIR = $(abspath ./build)
+TEST_NAMES = $(addprefix rv64ui-uarch-, $(TESTS))
+TESTS_BIN_NAMES = $(addsuffix .bin, $(TEST_NAMES))
+TESTS_DUMP_NAMES = $(addsuffix .dump, $(TEST_NAMES))
+TARGET_TESTS = $(addprefix $(BUILD_DIR)/, $(TEST_NAMES))
 
-all:  $(DEST_UARCH_TESTS_BIN)  $(DEST_UARCH_TESTS_DUMP)
+TARGET_TEST_BINS  = \
+	$(addprefix $(THIRDPARTY_BUILD_DIR)/, $(THIRDPARTY_TESTS_BIN_NAMES)) \
+	$(addprefix $(BUILD_DIR)/, $(TESTS_BIN_NAMES))
+
+TARGET_TEST_DUMPS = \
+	$(addprefix $(THIRDPARTY_BUILD_DIR)/, $(THIRDPARTY_TESTS_DUMP_NAMES)) \
+	$(addprefix $(BUILD_DIR)/, $(TESTS_DUMP_NAMES))
+
+TARGETS =  \
+	$(TARGET_THIRDPARTY_TESTS)  \
+	$(TARGET_TESTS)  \
+	$(TARGET_TEST_BINS) \
+	$(TARGET_TEST_DUMPS) 
+
+all: $(TARGETS)
 
 clean:
-	rm -f $(DEST_UARCH_TESTS) $(DEST_UARCH_TESTS_BIN) $(DEST_UARCH_TESTS_DUMP)
+	rm -f $(TARGETS) $(BUILD_DIR) $(THIRDPARTY_BUILD_DIR)
 
-$(DEST_DIR)/rv64ui-uarch-%: $(SRC_DIR)/%.S
+install:
+	mkdir -p $(INSTALLDIR)
+	cp -a $(BUILD_DIR)/* $(INSTALLDIR)
+	cp -a $(THIRDPARTY_BUILD_DIR)/* $(INSTALLDIR)
+
+$(THIRDPARTY_BUILD_DIR)/rv64ui-uarch-%: $(THIRDPARTY_BUILD_DIR) $(THIRDPARTY_SRC_DIR)/%.S
 	$(RISCV_GCC) $(RISCV_GCC_OPTS) -I$(UARCH_ENV_DIR) \
-		-I$(SRC_DIR)/../macros/scalar \
+		-I$(THIRDPARTY_SRC_DIR)/../macros/scalar \
 		-I$(LIB_DIR)/machine-emulator-defines \
 		-T$(UARCH_ENV_DIR)/link.ld \
-		$(SRC_DIR)/$*.S -o $(DEST_DIR)/rv64ui-uarch-$*
+		$(THIRDPARTY_SRC_DIR)/$*.S -o $(THIRDPARTY_BUILD_DIR)/rv64ui-uarch-$*
+
+$(BUILD_DIR)/rv64ui-uarch-%: $(BUILD_DIR) $(SRC_DIR)/%.S
+	$(RISCV_GCC) $(RISCV_GCC_OPTS) -I$(UARCH_ENV_DIR) \
+		-I$(THIRDPARTY_SRC_DIR)/../macros/scalar \
+		-I$(LIB_DIR)/machine-emulator-defines \
+		-T$(UARCH_ENV_DIR)/link.ld \
+		$(SRC_DIR)/$*.S -o $(BUILD_DIR)/rv64ui-uarch-$*
 
 %.bin: %
 	$(RISCV_OBJCOPY) $* $*.bin
@@ -52,3 +88,5 @@ $(DEST_DIR)/rv64ui-uarch-%: $(SRC_DIR)/%.S
 %.dump: %
 	$(RISCV_OBJDUMP) $* > $*.dump
 
+$(BUILD_DIR) $(THIRDPARTY_BUILD_DIR):
+	mkdir -p $@

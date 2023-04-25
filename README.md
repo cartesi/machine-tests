@@ -22,6 +22,7 @@ $ make toolchain-env
 [toolchain-env]$ make
 [toolchain-env]$ exit 
 $ make INSTALLDIR=/my/path install 
+$ make INSTALLDIR=/my/path uarch-install
 ```
 
 Cleaning:

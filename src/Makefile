@@ -54,11 +54,17 @@ $(BUILD_DIR)/bootstrap.elf: bootstrap.S $(BUILD_DIR)
 	$(CC) $(CFLAGS) -Tbootstrap.ld -o $@ $<
 
 .PRECIOUS: $(BUILD_DIR)/%.elf
-.PHONY: all clean copy uarch
+.PHONY: all clean copy uarch uarch-clean uarch-install
 all: $(BINS) $(DUMPS)
 
 uarch:
 	make -C uarch
+
+uarch-install:
+	make -C uarch install
+
+uarch-clean:
+	make -C uarch clean
 
 clean:
 	$(RM) -r $(BUILD_DIR)/*.elf $(BUILD_DIR)/*.bin $(BUILD_DIR)/*.dump

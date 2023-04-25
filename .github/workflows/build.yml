@@ -28,7 +28,9 @@ jobs:
           make toolchain-exec CONTAINER_COMMAND="/usr/bin/make uarch -j$(nproc)"
 
       - name: Install
-        run: make install
+        run: |
+          make install
+          make uarch-install
 
       - name: TAR
         run: tar -czf machine-tests-`git describe --tags --exact-match`.tar.gz -C /opt/cartesi/tests .

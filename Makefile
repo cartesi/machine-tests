@@ -35,7 +35,7 @@ RVDUMP = $(RISCV_PREFIX)objdump
 
 all: $(SRCDIR)
 
-clean: $(SRCCLEAN)
+clean: $(SRCCLEAN) uarch-clean
 
 depclean: $(DEPCLEAN) clean
 	rm -rf $(BUILDDIR)
@@ -79,6 +79,12 @@ install: copy-riscv-tests
 	mkdir -p $(INSTALLDIR)
 	cp -a $(BUILDDIR)/*.bin $(BUILDDIR)/*.dump $(BUILDDIR)/*.elf $(INSTALLDIR)
 
+uarch-install:
+	$(MAKE) -C $(SRCDIR) $@
+
+uarch-clean:
+	$(MAKE) -C $(SRCDIR) $@
+
 toolchain-env:
 	@docker run --hostname toolchain-env -it --rm \
 		-e USER=$$(id -u -n) \
@@ -99,4 +105,4 @@ toolchain-exec:
 		-w /opt/cartesi/machine-tests \
 		$(TOOLCHAIN_DOCKER_REPOSITORY):$(TOOLCHAIN_TAG) $(CONTAINER_COMMAND)
 
-.PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN)
+.PHONY: all clean distclean downloads $(SRCDIR) $(DEPDIRS) $(SRCCLEAN) $(DEPCLEAN) uarch-install uarch-clean
