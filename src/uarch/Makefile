@@ -90,3 +90,7 @@ $(BUILD_DIR)/rv64ui-uarch-%: $(BUILD_DIR) $(SRC_DIR)/%.S
 
 $(BUILD_DIR) $(THIRDPARTY_BUILD_DIR):
 	mkdir -p $@
+
+install:
+	cp rv64ui-uarch-catalog.json $(INSTALLDIR)
+

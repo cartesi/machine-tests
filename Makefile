@@ -68,6 +68,9 @@ $(SRCDIR):
 uarch:
 	$(MAKE) -C $(SRCDIR) RISCV_PREFIX=$(RISCV_PREFIX) $(TARGET) uarch
 
+uarch-install:
+	$(MAKE) -C $(SRCDIR) INSTALLDIR=$(INSTALLDIR) $@
+
 $(SRCCLEAN) $(DEPCLEAN): %.clean:
 	$(MAKE) -C $* clean
 
@@ -78,9 +81,6 @@ copy-riscv-tests: $(BUILDDIR)
 install: copy-riscv-tests
 	mkdir -p $(INSTALLDIR)
 	cp -a $(BUILDDIR)/*.bin $(BUILDDIR)/*.dump $(BUILDDIR)/*.elf $(INSTALLDIR)
-
-uarch-install:
-	$(MAKE) -C $(SRCDIR) $@
 
 uarch-clean:
 	$(MAKE) -C $(SRCDIR) $@
