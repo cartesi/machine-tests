@@ -61,7 +61,7 @@ uarch:
 	make -C uarch
 
 uarch-install:
-	make -C uarch install INSTALLDIR=$(INSTALLDIR) 
+	make -C uarch install INSTALLDIR=$(INSTALLDIR)
 
 uarch-clean:
 	make -C uarch clean

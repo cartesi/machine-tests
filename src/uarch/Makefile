@@ -56,7 +56,7 @@ TARGETS =  \
 	$(TARGET_THIRDPARTY_TESTS)  \
 	$(TARGET_TESTS)  \
 	$(TARGET_TEST_BINS) \
-	$(TARGET_TEST_DUMPS) 
+	$(TARGET_TEST_DUMPS)
 
 all: $(TARGETS)
 
@@ -93,4 +93,3 @@ $(BUILD_DIR) $(THIRDPARTY_BUILD_DIR):
 
 install:
 	cp rv64ui-uarch-catalog.json $(INSTALLDIR)
-
