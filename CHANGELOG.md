@@ -6,7 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.27.0] - 2023-04-26
+## [0.27.0] - 2023-04-27
 - Added rv64ui-uarch-catalog.json
 - Added rv64ui uarch fence test
 
