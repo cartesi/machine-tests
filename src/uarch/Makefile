@@ -67,6 +67,7 @@ install:
 	mkdir -p $(INSTALLDIR)
 	cp -a $(BUILD_DIR)/* $(INSTALLDIR)
 	cp -a $(THIRDPARTY_BUILD_DIR)/* $(INSTALLDIR)
+	cp rv64ui-uarch-catalog.json $(INSTALLDIR)
 
 $(THIRDPARTY_BUILD_DIR)/rv64ui-uarch-%: $(THIRDPARTY_BUILD_DIR) $(THIRDPARTY_SRC_DIR)/%.S
 	$(RISCV_GCC) $(RISCV_GCC_OPTS) -I$(UARCH_ENV_DIR) \
@@ -91,5 +92,3 @@ $(BUILD_DIR)/rv64ui-uarch-%: $(BUILD_DIR) $(SRC_DIR)/%.S
 $(BUILD_DIR) $(THIRDPARTY_BUILD_DIR):
 	mkdir -p $@
 
-install:
-	cp rv64ui-uarch-catalog.json $(INSTALLDIR)
