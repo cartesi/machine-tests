@@ -61,7 +61,7 @@ TARGETS =  \
 all: $(TARGETS)
 
 clean:
-	rm -f $(TARGETS) $(BUILD_DIR) $(THIRDPARTY_BUILD_DIR)
+	rm -rf $(TARGETS) $(BUILD_DIR) $(THIRDPARTY_BUILD_DIR)
 
 install:
 	mkdir -p $(INSTALLDIR)

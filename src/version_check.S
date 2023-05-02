@@ -20,8 +20,8 @@
 	j exit;
 
 #define CARTESI_MVENDORID 0x6361727465736920
-#define CARTESI_MARCHID   0xe
-#define CARTESI_MIMPID    0x1
+#define CARTESI_MARCHID_MIN   0xf // Minimum marchid
+#define CARTESI_MIMPID_MIN    0x1 // Minimum mimpid
 
 // Section with code
 .section .text.init
@@ -37,13 +37,13 @@ _start:
 	csrr t1, mvendorid;
 	bne t0, t1, error;
 
-	li t0, CARTESI_MARCHID;
+	li t0, CARTESI_MARCHID_MIN;
 	csrr t1, marchid;
-	bne t0, t1, error;
+	bgt t0, t1, error;
 
-	li t0, CARTESI_MIMPID;
+	li t0, CARTESI_MIMPID_MIN;
 	csrr t1, mimpid;
-	bne t0, t1, error;
+	bgt t0, t1, error;
 
 	// Exit with success
 	exit_imm(0);
