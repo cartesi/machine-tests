@@ -6,7 +6,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.28.0] - 2023-05-02
+### Changed
+- Bump marchid to 0xf
+
 ## [0.27.0] - 2023-04-27
+### Added
 - Added rv64ui-uarch-catalog.json
 - Added rv64ui uarch fence test
 
@@ -117,7 +122,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.27.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.28.0...HEAD
+[0.28.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.28.0
 [0.27.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.27.0
 [0.26.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.26.0
 [0.25.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.25.0
