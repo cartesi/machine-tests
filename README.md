@@ -1,5 +1,3 @@
-> :warning: The Cartesi team keeps working internally on the next version of this repository, following its regular development roadmap. Whenever there's a new version ready or important fix, these are published to the public source tree as new releases.
-
 # Cartesi Machine Tests
 
 The Cartesi Machine Tests is a repository containing RISC-V testing code.
@@ -20,8 +18,8 @@ $ make toolchain-env
 [toolchain-env]$ make dep
 [toolchain-env]$ make uarch
 [toolchain-env]$ make
-[toolchain-env]$ exit 
-$ make INSTALLDIR=/my/path install 
+[toolchain-env]$ exit
+$ make INSTALLDIR=/my/path install
 $ make INSTALLDIR=/my/path uarch-install
 ```
 
@@ -51,4 +49,3 @@ Please note we have a [Code of Conduct](CODE_OF_CONDUCT.md), please follow it in
 
 The machine-tests repository and all contributions are licensed under
 [APACHE 2.0](https://www.apache.org/licenses/LICENSE-2.0). Please review our [LICENSE](LICENSE) file.
-
