@@ -5,8 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [0.29.0] - 2023-08-12
+### Added
+- Added pull request templates
+
 ### Changed
 - Updated license/copyright notice in all source code
+- Updated toolchain to v0.15.0
+- Updated machine-emulator-defines
 
 ## [0.28.0] - 2023-05-02
 ### Changed
@@ -124,7 +131,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [0.2.0]
 - [0.1.0]
 
-[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.28.0...HEAD
+[Unreleased]: https://github.com/cartesi/machine-tests/compare/v0.29.0...HEAD
+[0.29.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.29.0
 [0.28.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.28.0
 [0.27.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.27.0
 [0.26.0]: https://github.com/cartesi/machine-tests/releases/tag/v0.26.0
