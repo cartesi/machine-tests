@@ -28,7 +28,7 @@ DEPDIRS := $(addprefix $(DEPDIR)/,riscv-tests)
 DEPCLEAN := $(addsuffix .clean,$(DEPDIRS))
 
 TOOLCHAIN_DOCKER_REPOSITORY ?= cartesi/toolchain
-TOOLCHAIN_TAG ?= 0.15.0
+TOOLCHAIN_TAG ?= 0.16.0
 
 RISCV_PREFIX = riscv64-cartesi-linux-gnu-
 RVCC  = $(RISCV_PREFIX)gcc
