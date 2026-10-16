@@ -1,5 +1,11 @@
 # Cartesi Machine Tests
 
+> [!WARNING]
+> **This repository is no longer maintained.**
+> Starting with machine-emulator v0.16.0, these tests live in the [tests/machine](https://github.com/cartesi/machine-emulator/tree/main/tests/machine) directory of cartesi/machine-emulator.
+> Existing releases here remain available for older projects.
+> Do not use this repository for new development.
+
 The Cartesi Machine Tests is a repository containing RISC-V testing code.
 
 ## Getting Started
